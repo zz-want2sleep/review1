@@ -148,4 +148,53 @@
 
     除了 `watch` 选项之外，您还可以使用 [vm.$watch API](http://doc.vue-js.com/v2/api/#vm-watch) 命令。
 
+*   组件在注册之后，便可以在父实例的模块中以自定义元素 `` 的形式使用。要确保在初始化根实例 **之前** 注册了组件：
+
+    ```
+    <div id="example">  <my-component></my-component></div>
+    // 注册Vue.component('my-component', {  template: '<div>A custom component!</div>'})// 创建根实例new Vue({  el: '#example'})
+    ```
+
+    渲染为：
+
+    ```
+    <div id="example">  <div>A custom component!</div></div>
+    ```
+
+*    我们知道，父组件是使用 props 传递数据给子组件，但如果子组件要把数据传递回去，应该怎样做？那就是自定义事件！
+
+     
+
+     ### 使用 `v-on` 绑定自定义事件
+
+     每个 Vue 实例都实现了[事件接口(Events interface)](http://doc.vue-js.com/v2/api/#Instance-Methods-Events)，即：
+
+*    使用 `$on(eventName)` 监听事件
+
+*    使用 `$emit(eventName)` 触发事件
+
+Vue的事件系统分离自浏览器的[EventTarget API](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget)。尽管它们的运行类似，但是`$on`和 `$emit` **不是**`addEventListener` 和 `dispatchEvent` 的别名。
+
+另外，父组件可以在使用子组件的地方直接用 `v-on` 来监听子组件触发的事件。
+
+*   ```js
+    <div id="counter-event-example">  <p>{{ total }}</p>  <button-counter v-on:increment="incrementTotal"></button-counter>  <button-counter v-on:increment="incrementTotal"></button-counter></div>
+        
+    Vue.component('button-counter',
+                  {  template: '<button v-on:click="increment">{{ counter }}</button>', 
+                   data: function () {    return {      counter: 0    }  },
+                   methods: {    increment: function () {      this.counter += 1      this.$emit('increment')    } 
+                  },
+                  })
+    
+    new Vue({  el: '#counter-event-example',  data: {    total: 0  },  methods: {    incrementTotal: 
+                                                                                 function () {      this.total += 1  
+                                                                                                                 }  
+                                                                                }
+            })
+    ```
+
 *   
+
+
+
