@@ -12,8 +12,9 @@
 
 *   ```
     redis-cli.exe -h 127.0.0.1 -p 6379
-    ```
-
+    这一步请看下面，分割线后面的文字。
+```
+    
 *   设置键值对:
 
     ```
@@ -45,3 +46,35 @@ windows下安装[Redis](http://lib.csdn.net/base/redis)第一次启动报错：
 -----
 
 *   当然我是用的是koa2框架，使用两个==中间件==来使用redis比原生的用法更方便开发。
+*   koa-generator-session
+*   koa-redis
+*   可以一起下载 ==npm（cnpm) install koa-generic-session koa-redis==
+*   koa-generator-session用来操作==session==
+*   koa-redis和mongoose类似，用来连接数据库（redis)
+
+```
+一般来说session的信息量特别大，一般情况下不直接使用内存，而是使用redis数据库来处理session。
+```
+
+----
+
+---
+
+
+
+访问redis还是得用原生代码，
+
+```
+redis-cli 启动客户端程序，进入客户端界面127.0.0.1:6379>，连接到了redis服务上。
+```
+
+```
+注：koa-redis这个插件有默认值会自动配Host：127.0.0.1和port：6379，比mongoose简化了koa连接操作。
+```
+
+```
+想看redis里面的键(key)，在客户端界面使用`keys *`命令查看redis中的所有keys(键名)。
+如果想看redis里面值(value)，在客户端命令行中使用`get （上面key *中出现的键名之一）`
+两者配合使用
+```
+
